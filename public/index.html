@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🎮 Game Subtitle Translator — Oyun Altyazı Çeviri Aracı</title>
+  <meta name="description"
+    content="AI destekli oyun altyazı çeviri aracı. İngilizce oyun altyazılarını Türkçeye çevirin.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="bg-effects">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <div class="logo">
+        <span class="logo-icon">🎮</span>
+        <div>
+          <h1>SubTranslate<span class="accent">AI</span></h1>
+          <p class="tagline">Oyun Altyazı Çeviri Aracı — EN → TR</p>
+        </div>
+      </div>
+      <div class="badge">
+        <span class="badge-dot"></span>
+        AI Çeviri Motoru
+      </div>
+    </header>
+
+    <!-- Upload Section -->
+    <section id="upload-section" class="card">
+      <div id="drop-zone" class="drop-zone">
+        <div class="drop-zone-content">
+          <div class="upload-icon">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="17 8 12 3 7 8" />
+              <line x1="12" y1="3" x2="12" y2="15" />
+            </svg>
+          </div>
+          <h3>Altyazı Dosyanızı Sürükleyin</h3>
+          <p>veya <span class="browse-link" id="browse-btn">dosya seçin</span></p>
+          <div class="supported-formats">
+            <span class="format-tag">.srt</span>
+            <span class="format-tag">.json</span>
+            <span class="format-tag">.txt</span>
+            <span class="format-tag">.po</span>
+            <span class="format-tag">.csv</span>
+          </div>
+        </div>
+        <input type="file" id="file-input" accept=".srt,.json,.txt,.po,.csv" hidden>
+      </div>
+    </section>
+
+    <!-- File Info -->
+    <section id="file-info" class="card hidden">
+      <div class="file-info-header">
+        <div class="file-details">
+          <div class="file-icon">📄</div>
+          <div>
+            <h3 id="file-name">dosya.srt</h3>
+            <p id="file-meta">SRT • 0 satır</p>
+          </div>
+        </div>
+        <div class="file-actions">
+          <div class="engine-selector">
+            <label for="engine-select">Çeviri Motoru:</label>
+            <select id="engine-select">
+              <option value="auto">🔄 Otomatik (Gemini → MyMemory)</option>
+              <option value="gemini">🤖 Gemini AI (Yüksek Kalite)</option>
+              <option value="mymemory">🆓 MyMemory (Ücretsiz & Hızlı)</option>
+            </select>
+          </div>
+          <button id="change-file-btn" class="btn btn-ghost">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="1 4 1 10 7 10" />
+              <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
+            </svg>
+            Değiştir
+          </button>
+          <button id="translate-btn" class="btn btn-primary">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="m5 8 6 6" />
+              <path d="m4 14 6-6 2-3" />
+              <path d="M2 5h12" />
+              <path d="M7 2h1" />
+              <path d="m22 22-5-10-5 10" />
+              <path d="M14 18h6" />
+            </svg>
+            Çeviriyi Başlat
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Progress -->
+    <section id="progress-section" class="card hidden">
+      <div class="progress-header">
+        <h3>⚡ Çeviri Devam Ediyor...</h3>
+        <span id="progress-percent">0%</span>
+      </div>
+      <div class="progress-bar-container">
+        <div id="progress-bar" class="progress-bar" style="width: 0%"></div>
+      </div>
+      <p id="progress-status" class="progress-status">Hazırlanıyor...</p>
+    </section>
+
+    <!-- Preview Section -->
+    <section id="preview-section" class="card hidden">
+      <div class="preview-header">
+        <h3>📋 Çeviri Önizleme</h3>
+        <div class="preview-actions">
+          <button id="download-btn" class="btn btn-success">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="7 10 12 15 17 10" />
+              <line x1="12" y1="15" x2="12" y2="3" />
+            </svg>
+            Çevrilmiş Dosyayı İndir
+          </button>
+        </div>
+      </div>
+      <div class="preview-table-container">
+        <table class="preview-table">
+          <thead>
+            <tr>
+              <th class="col-num">#</th>
+              <th class="col-original">🇬🇧 Orijinal (İngilizce)</th>
+              <th class="col-translated">🇹🇷 Çeviri (Türkçe)</th>
+            </tr>
+          </thead>
+          <tbody id="preview-body">
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Stats -->
+    <section id="stats-section" class="hidden">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-value" id="stat-total">0</div>
+          <div class="stat-label">Toplam Satır</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="stat-translated">0</div>
+          <div class="stat-label">Çevrilen</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="stat-time">0s</div>
+          <div class="stat-label">Süre</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>SubTranslateAI — Google Gemini ile güçlendirilmiş oyun altyazı çeviri aracı</p>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+
+</html>
